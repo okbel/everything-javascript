@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Explained Math</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+
+    .right {
+      float: right;
+      opacity: 0.4;
+    }
+
+    .right:hover {
+      opacity: 1;
+      cursor: pointer;
+    }
+
+    .number {
+      font-size: 25px;
+      text-align: center;
+      display: block;
+    }
+    .list-group {
+      /*width: 480px;*/
+    }
+    .list-group li{
+      min-height: 60px;
+    }
+
+    .list-group li input{
+      display: inline-block;
+      width: 180px;
+      float: right;
+      box-sizing: border-box;
+      height: auto;
+    }
+
+    .list-group span{
+      display: inline-block;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="page-header">
+    <h1>Math. Explained <small> Usage of the Math built-in Javascript object</small></h1>
+  </div>
+  <div class="row">
+    <div class="col col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Constants <span class="glyphicon glyphicon-info-sign right" aria-hidden="true"></span></h3>
+        </div>
+        <ul class="list-group" id="mathConstantList"></ul>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Math.floor vs Math.round vs Math.ceil </span></h3>
+        </div>
+        <table class="table table-bordered" id="versus">
+          <tr>
+            <td colspan="2">
+              <input class="form-control" id="mainNumber">
+            </td>
+          </tr>
+          <tr>
+            <th>Method</th>
+            <th>Result</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="col col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Methods <span class="glyphicon glyphicon-info-sign right" aria-hidden="true"></span></h3>
+        </div>
+        <table class="table table-bordered" id="mathMethodTable">
+          <tr>
+            <th>Method</th>
+            <th>Input</th>
+            <th>Result</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Script -->
+<script>
+  (function($){
+
+    var element = function(identifier) {
+      return $.querySelector(identifier)
+    }
+
+    // Versus
+
+    var versus = [
+      {
+        id: 'vs-math-floor',
+        method: "Math.floor",
+      },
+      {
+        id: 'vs-math-round',
+        method: "Math.round",
+      },
+      {
+        id: 'vs-math-ceil',
+        method: "Math.ceil"
+      }
+    ];
+
+    function createVersusRow(item) {
+      var tr = $.createElement("tr");
+      var td = $.createElement("td");
+
+      td.innerHTML = item.method;
+      tr.appendChild(td);
+      td = $.createElement("td");
+      tr.appendChild(td);
+
+      var resultInput = $.createElement("input");
+
+      resultInput.setAttribute("id", item.id + "-result");
+      resultInput.setAttribute("class", "form-control");
+      resultInput.setAttribute("readonly", "readonly");
+      td.appendChild(resultInput)
+      tr.appendChild(td);
+      return tr;
+    }
+
+    versus.map(function(item){
+      element("#versus tbody").appendChild(createVersusRow(item));
+    });
+
+    function handleInputChange() {
+      var value = Number(element("#mainNumber").value);
+      element("#vs-math-floor-result").value = Math.floor(value);
+      element("#vs-math-round-result").value = Math.round(value);
+      element("#vs-math-ceil-result").value = Math.ceil(value);
+    }
+    element("#mainNumber").addEventListener('keyup', handleInputChange);
+
+    // Math Constants
+
+    var mathConstants = [
+      {
+        name: 'Math.E',
+        shortDescription: 'Euler\'s number',
+        description: '',
+        result: Math.E
+      },
+      {
+        name: 'PI',
+        shortDescription: '',
+        description: '',
+        result: Math.PI
+      },
+      {
+        name: 'Math.SQRT2',
+        shortDescription: 'the square root of 2',
+        description: '',
+        result: Math.SQRT2
+      },
+      {
+        name: 'Math.SQRT1_2',
+        shortDescription: 'the square root of 1/2',
+        description: '',
+        result: Math.SQRT1_2
+      },
+      {
+        name: 'Math.LN2',
+        shortDescription: 'the natural logarithm of 2',
+        description: '',
+        result: Math.LN2
+      },
+      {
+        name: 'Math.LN10',
+        shortDescription: 'the natural logarithm of 10',
+        description: '',
+        result: Math.LN10
+      },
+      {
+        name: 'Math.LOG2E',
+        shortDescription: 'base 2 logarithm of E',
+        description: '',
+        result: Math.LOG2E
+      },
+      {
+        name: 'Math.LOG10E',
+        shortDescription: 'base 10 logarithm of E',
+        description: '',
+        result: Math.LOG2E
+      },
+    ];
+
+    function createMathConstantRow(item) {
+      var li = $.createElement("li");
+      li.setAttribute("class", "list-group-item");
+      var span = $.createElement("span");
+      span.innerHTML = item.name;
+//            span.innerHTML = item.name + (item.shortDescription ? ' - ' + item.shortDescription : "" );
+      var input = $.createElement("input");
+      input.setAttribute("class", "form-control");
+      input.setAttribute("readonly", "readonly");
+      input.setAttribute("value", item.result);
+
+      li.appendChild(span);
+      li.appendChild(input);
+      return li;
+    }
+
+    mathConstants.map(function(item){
+      element("#mathConstantList").appendChild(createMathConstantRow(item));
+    });
+
+    // Math Methods
+    var mathMethods = [
+      {
+        id: 'math-abs',
+        method: 'Math.abs',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 5,
+        event: 'keyup',
+        defaultResult: Math.abs(5),
+        eventHandler: function(){
+          var value = element("#math-abs-input").value;
+          element("#math-abs-result").value = Math.abs(value)
+        }
+      },
+      {
+        id: 'math-acos',
+        method: 'Math.acos',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 0.5,
+        event: 'keyup',
+        defaultResult: Math.acos(0.5),
+        eventHandler: function(){
+          var value = element("#math-acos-input").value;
+          element("#math-acos-result").value = Math.acos(value)
+        }
+      },
+      {
+        id: 'math-asin',
+        method: 'Math.asin',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 0,
+        event: 'keyup',
+        defaultResult: Math.asin(0),
+        eventHandler: function(){
+          var value = element("#math-asin-input").value;
+          element("#math-asin-result").value = Math.asin(value)
+        }
+      },
+      {
+        id: 'math-atan',
+        method: 'Math.atan',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 0.5,
+        event: 'keyup',
+        defaultResult: Math.atan(0.5),
+        eventHandler: function(){
+          var value = element("#math-atan-input").value;
+          element("#math-atan-result").value = Math.atan(value)
+        }
+      },
+      {
+        id: 'math-atan2',
+        method: 'Math.atan2',
+        description: "Description",
+        inputType: 'text',
+        inputValue: '90, 15',
+        event: 'keyup',
+        defaultResult: Math.atan2(90,15),
+        eventHandler: function(){
+          var values = element("#math-atan2-input").value.split(",");
+          var resValues = values.map(function(value) {
+            return Number(value);
+          });
+          element("#math-atan2-result").value = Math.atan2.apply(null, resValues)
+        }
+      },
+      {
+        id: 'math-ceil',
+        method: 'Math.ceil',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 2.3,
+        event: 'keyup',
+        defaultResult: Math.ceil(2.3),
+        eventHandler: function(){
+          var value = element("#math-ceil-input").value;
+          element("#math-ceil-result").value = Math.ceil(value)
+        }
+      },
+      {
+        id: 'math-cos',
+        method: 'Math.cos',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 1,
+        event: 'keyup',
+        defaultResult: Math.cos(1),
+        eventHandler: function(){
+          var value = element("#math-cos-input").value;
+          element("#math-cos-result").value = Math.cos(value)
+        }
+      },
+      {
+        id: 'math-exp',
+        method: 'Math.exp',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 4,
+        event: 'keyup',
+        defaultResult: Math.exp(4),
+        eventHandler: function(){
+          var value = element("#math-exp-input").value;
+          element("#math-exp-result").value = Math.exp(value)
+        }
+      },
+      {
+        id: 'math-floor',
+        method: 'Math.floor',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 4,
+        event: 'keyup',
+        defaultResult: Math.floor(4),
+        eventHandler: function(){
+          var value = element("#math-floor-input").value;
+          element("#math-floor-result").value = Math.floor(value)
+        }
+      },
+      {
+        id: 'math-log',
+        method: 'Math.log',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 2,
+        event: 'keyup',
+        defaultResult: Math.log(2),
+        eventHandler: function(){
+          var value = element("#math-log-input").value;
+          element("#math-log-result").value = Math.log(value)
+        }
+      },
+      {
+        id: 'math-max',
+        method: 'Math.max',
+        description: "Description",
+        inputType: 'text',
+        inputValue: [1,2,3],
+        event: 'keyup',
+        defaultResult: Math.max.apply(null, [1,2,3]),
+        eventHandler: function(){
+          var values = element("#math-max-input").value.split(",");
+          var resValues = values.map(function(value) {
+            return Number(value);
+          });
+          element("#math-max-result").value = Math.max.apply(null, resValues)
+        }
+      },
+      {
+        id: 'math-min',
+        method: 'Math.min',
+        description: "Description",
+        inputType: 'text',
+        inputValue: [-2000, 1,2,3],
+        event: 'keyup',
+        defaultResult: Math.min.apply(null, [-2000, 1,2,3]),
+        eventHandler: function(){
+          var values = element("#math-min-input").value.split(",");
+          var resValues = values.map(function(value) {
+            return Number(value);
+          });
+          element("#math-min-result").value = Math.min.apply(null, resValues)
+        }
+      },
+      {
+        id: 'math-pow',
+        method: 'Math.pow',
+        description: "Description",
+        inputType: 'text',
+        inputValue: [10, 20],
+        event: 'keyup',
+        defaultResult: Math.pow.apply(null, [10, 20]),
+        eventHandler: function(){
+          var values = element("#math-pow-input").value.split(",");
+          var resValues = values.map(function(value) {
+            return Number(value);
+          });
+          element("#math-pow-result").value = Math.pow.apply(null, resValues)
+        }
+      },
+      {
+        id: 'math-random',
+        method: 'Math.random',
+        description: "Description",
+        inputType: 'button',
+        inputValue: 'Randomize',
+        event: 'click',
+        defaultResult: Math.random(),
+        eventHandler: function(){
+          element("#math-random-result").value = Math.random()
+        }
+      },
+      {
+        id: 'math-round',
+        method: 'Math.round',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 2.66768,
+        event: 'keyup',
+        defaultResult: Math.round(2.66768),
+        eventHandler: function(){
+          var value = element("#math-round-input").value;
+          element("#math-round-result").value = Math.round(value)
+        }
+      },
+      {
+        id: 'math-sin',
+        method: 'Math.sin',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 1,
+        event: 'keyup',
+        defaultResult: Math.sin(1),
+        eventHandler: function(){
+          var value = element("#math-sin-input").value;
+          element("#math-sin-result").value = Math.sin(value)
+        }
+      },
+      {
+        id: 'math-sqrt',
+        method: 'Math.sqrt',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 64,
+        event: 'keyup',
+        defaultResult: Math.sqrt(64),
+        eventHandler: function(){
+          var value = element("#math-sqrt-input").value;
+          element("#math-sqrt-result").value = Math.sqrt(value)
+        }
+      },
+      {
+        id: 'math-tan',
+        method: 'Math.tan',
+        description: "Description",
+        inputType: 'text',
+        inputValue: 0,
+        event: 'keyup',
+        defaultResult: Math.tan(0),
+        eventHandler: function(){
+          var value = element("#math-tan-input").value;
+          element("#math-tan-result").value = Math.tan(value)
+        }
+      }
+    ];
+
+    function createMathMethodRow(item) {
+      var tr = $.createElement("tr");
+      var td = $.createElement("td");
+      var resultInput = $.createElement("input");
+      tr.appendChild(td);
+      td.innerHTML = item.method;
+
+//            td = $.createElement("td");
+//            td.innerHTML = item.description;
+//            tr.appendChild(td);
+
+      td = $.createElement("td");
+      input = $.createElement("input");
+      input.setAttribute("type", item.inputType);
+      input.setAttribute("value", item.inputValue);
+      if (item.inputType === "text") {
+        input.setAttribute("class", "form-control");
+      }
+      if (item.inputType === "button") {
+        input.setAttribute("class", "btn btn-primary");
+      }
+      input.setAttribute("id", item.id + "-input");
+      input.addEventListener(item.event, item.eventHandler);
+
+      td.appendChild(input);
+      tr.appendChild(td);
+
+      td = $.createElement("td");
+      resultInput.setAttribute("id", item.id + "-result");
+      resultInput.setAttribute("class", "form-control");
+      resultInput.setAttribute("value", item.defaultResult);
+      resultInput.setAttribute("readonly", "readonly");
+      td.appendChild(resultInput)
+      tr.appendChild(td);
+      return tr;
+    }
+
+    mathMethods.map(function(item){
+      element("#mathMethodTable tbody").appendChild(createMathMethodRow(item));
+    });
+
+  })(document);
+</script>
+</body>
+</html>
